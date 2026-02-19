@@ -33,6 +33,10 @@ export const Grid = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: ${({ theme }) => theme.spacing.lg};
 
+  & > *:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
   }

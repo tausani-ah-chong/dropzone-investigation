@@ -4,6 +4,7 @@ import { ReactDropzonePanel } from './components/panels/ReactDropzonePanel';
 import { UppyPanel } from './components/panels/UppyPanel';
 import { FilePondPanel } from './components/panels/FilePondPanel';
 import { ReactUploadyPanel } from './components/panels/ReactUploadyPanel';
+import { CustomDropzonePanel } from './components/panels/CustomDropzonePanel';
 import { DELAY_OPTIONS } from './types/dropzone';
 
 const App: React.FC = () => {
@@ -13,7 +14,7 @@ const App: React.FC = () => {
     <PageWrapper>
       <PageTitle>Dropzone Library Comparison</PageTitle>
       <PageSubtitle>
-        Comparing the top 4 MIT-licensed React file drop libraries — drop .csv or .zip files (max 10 MB) in each panel
+        Comparing the top 4 MIT-licensed React file drop libraries plus a custom in-house hook — drop .csv or .zip files (max 10 MB) in each panel
       </PageSubtitle>
 
       <DelayRow>
@@ -36,6 +37,7 @@ const App: React.FC = () => {
         <UppyPanel uploadDelayMs={delayMs} />
         <FilePondPanel uploadDelayMs={delayMs} />
         <ReactUploadyPanel uploadDelayMs={delayMs} />
+        <CustomDropzonePanel uploadDelayMs={delayMs} />
       </Grid>
     </PageWrapper>
   );
