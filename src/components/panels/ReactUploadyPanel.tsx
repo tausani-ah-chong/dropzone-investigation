@@ -3,10 +3,11 @@ import Uploady from '@rpldy/uploady';
 import UploadDropZone from '@rpldy/upload-drop-zone';
 import type { DropHandlerMethod } from '@rpldy/upload-drop-zone';
 import styled, { css } from 'styled-components';
-import type { FileEntry, RejectedEntry } from '../../types/dropzone';
+import type { FileEntry, RejectedEntry, UploadStatus } from '../../types/dropzone';
 import { LIBRARIES } from '../../constants/libraries';
 import { LibraryCard } from '../LibraryCard/LibraryCard';
 import { FileFeedback } from '../FileFeedback/FileFeedback';
+import { UploadSection } from '../UploadSection/UploadSection';
 
 const MAX_SIZE = 10 * 1024 * 1024;
 const ALLOWED_TYPES = ['text/csv', 'application/zip', 'application/x-zip-compressed'];
@@ -70,10 +71,15 @@ function getRejectionReason(file: File): string {
 
 /* ── Panel ───────────────────────────────────────────────────────────── */
 
-export const ReactUploadyPanel: React.FC = () => {
+interface PanelProps {
+  uploadDelayMs: number;
+}
+
+export const ReactUploadyPanel: React.FC<PanelProps> = ({ uploadDelayMs }) => {
   const [accepted, setAccepted] = useState<FileEntry[]>([]);
   const [rejected, setRejected] = useState<RejectedEntry[]>([]);
   const [isDragActive, setIsDragActive] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
   const dragCountRef = useRef(0);
 
   const fileFilter = (file: File | string): boolean => {
@@ -148,10 +154,17 @@ export const ReactUploadyPanel: React.FC = () => {
           </DropZoneWrapper>
         </UploadDropZone>
       </Uploady>
+      <UploadSection
+        acceptedCount={accepted.length}
+        uploadDelayMs={uploadDelayMs}
+        status={uploadStatus}
+        onStatusChange={setUploadStatus}
+      />
       <FileFeedback
         accepted={accepted}
         rejected={rejected}
         onClear={() => { setAccepted([]); setRejected([]); }}
+        isUploading={uploadStatus === 'uploading'}
       />
     </LibraryCard>
   );

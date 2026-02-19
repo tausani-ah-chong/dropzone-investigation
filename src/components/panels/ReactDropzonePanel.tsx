@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone, type FileRejection } from 'react-dropzone';
 import styled, { css } from 'styled-components';
-import type { FileEntry, RejectedEntry } from '../../types/dropzone';
+import type { FileEntry, RejectedEntry, UploadStatus } from '../../types/dropzone';
 import { LIBRARIES } from '../../constants/libraries';
 import { LibraryCard } from '../LibraryCard/LibraryCard';
 import { FileFeedback } from '../FileFeedback/FileFeedback';
+import { UploadSection } from '../UploadSection/UploadSection';
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 
@@ -63,9 +64,14 @@ function mapRejectionReason(code: string): string {
   }
 }
 
-export const ReactDropzonePanel: React.FC = () => {
+interface PanelProps {
+  uploadDelayMs: number;
+}
+
+export const ReactDropzonePanel: React.FC<PanelProps> = ({ uploadDelayMs }) => {
   const [accepted, setAccepted] = useState<FileEntry[]>([]);
   const [rejected, setRejected] = useState<RejectedEntry[]>([]);
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejections: FileRejection[]) => {
@@ -109,10 +115,17 @@ export const ReactDropzonePanel: React.FC = () => {
         </DropText>
         <DropHint>.csv or .zip · max 10 MB</DropHint>
       </DropArea>
+      <UploadSection
+        acceptedCount={accepted.length}
+        uploadDelayMs={uploadDelayMs}
+        status={uploadStatus}
+        onStatusChange={setUploadStatus}
+      />
       <FileFeedback
         accepted={accepted}
         rejected={rejected}
         onClear={() => { setAccepted([]); setRejected([]); }}
+        isUploading={uploadStatus === 'uploading'}
       />
     </LibraryCard>
   );
