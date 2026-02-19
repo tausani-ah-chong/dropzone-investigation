@@ -4,10 +4,11 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import type { FilePondFile, FilePondErrorDescription } from 'filepond';
 import styled from 'styled-components';
-import type { FileEntry, RejectedEntry } from '../../types/dropzone';
+import type { FileEntry, RejectedEntry, UploadStatus } from '../../types/dropzone';
 import { LIBRARIES } from '../../constants/libraries';
 import { LibraryCard } from '../LibraryCard/LibraryCard';
 import { FileFeedback } from '../FileFeedback/FileFeedback';
+import { UploadSection } from '../UploadSection/UploadSection';
 
 // Register plugins once (idempotent)
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
@@ -51,10 +52,15 @@ const FilePondWrapper = styled.div`
   }
 `;
 
-export const FilePondPanel: React.FC = () => {
+interface PanelProps {
+  uploadDelayMs: number;
+}
+
+export const FilePondPanel: React.FC<PanelProps> = ({ uploadDelayMs }) => {
   const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
   const [accepted, setAccepted] = useState<FileEntry[]>([]);
   const [rejected, setRejected] = useState<RejectedEntry[]>([]);
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
 
   function handleAddFile(error: FilePondErrorDescription | null, file: FilePondFile) {
     if (error) {
@@ -97,10 +103,17 @@ export const FilePondPanel: React.FC = () => {
           credits={false}
         />
       </FilePondWrapper>
+      <UploadSection
+        acceptedCount={accepted.length}
+        uploadDelayMs={uploadDelayMs}
+        status={uploadStatus}
+        onStatusChange={setUploadStatus}
+      />
       <FileFeedback
         accepted={accepted}
         rejected={rejected}
         onClear={handleClear}
+        isUploading={uploadStatus === 'uploading'}
       />
     </LibraryCard>
   );

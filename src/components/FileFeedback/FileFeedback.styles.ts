@@ -78,7 +78,13 @@ export const ClearButton = styled.button`
   cursor: pointer;
   text-decoration: underline;
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: ${({ theme }) => theme.colors.textMuted};
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    text-decoration: none;
   }
 `;

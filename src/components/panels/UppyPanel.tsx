@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Uppy from '@uppy/core';
 import { UppyContextProvider, useDropzone, useUppyEvent } from '@uppy/react';
 import styled, { css } from 'styled-components';
-import type { FileEntry, RejectedEntry } from '../../types/dropzone';
+import type { FileEntry, RejectedEntry, UploadStatus } from '../../types/dropzone';
 import { LIBRARIES } from '../../constants/libraries';
 import { LibraryCard } from '../LibraryCard/LibraryCard';
 import { FileFeedback } from '../FileFeedback/FileFeedback';
+import { UploadSection } from '../UploadSection/UploadSection';
 
 const MAX_SIZE = 10 * 1024 * 1024;
 
@@ -112,9 +113,14 @@ const UppyDropzoneInner: React.FC<InnerProps> = ({ uppy, setAccepted, setRejecte
 
 /* ── Panel ───────────────────────────────────────────────────────────── */
 
-export const UppyPanel: React.FC = () => {
+interface PanelProps {
+  uploadDelayMs: number;
+}
+
+export const UppyPanel: React.FC<PanelProps> = ({ uploadDelayMs }) => {
   const [accepted, setAccepted] = useState<FileEntry[]>([]);
   const [rejected, setRejected] = useState<RejectedEntry[]>([]);
+  const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
 
   const uppy = useMemo(
     () =>
@@ -132,6 +138,7 @@ export const UppyPanel: React.FC = () => {
   useEffect(() => () => { uppy.destroy(); }, [uppy]);
 
   function handleClear() {
+    if (uploadStatus === 'uploading') return;
     setAccepted([]);
     setRejected([]);
     uppy.clear();
@@ -146,10 +153,17 @@ export const UppyPanel: React.FC = () => {
           setRejected={setRejected}
         />
       </UppyContextProvider>
+      <UploadSection
+        acceptedCount={accepted.length}
+        uploadDelayMs={uploadDelayMs}
+        status={uploadStatus}
+        onStatusChange={setUploadStatus}
+      />
       <FileFeedback
         accepted={accepted}
         rejected={rejected}
         onClear={handleClear}
+        isUploading={uploadStatus === 'uploading'}
       />
     </LibraryCard>
   );

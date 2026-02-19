@@ -37,3 +37,37 @@ export const Grid = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
+export const DelayRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
+`;
+
+export const DelayLabel = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.textDim};
+  margin-right: ${({ theme }) => theme.spacing.xs};
+`;
+
+export const DelayPill = styled.button<{ $active: boolean }>`
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid ${({ theme, $active }) =>
+    $active ? theme.colors.primary : theme.colors.border};
+  background: ${({ $active }) =>
+    $active ? 'rgba(108,142,242,0.15)' : 'transparent'};
+  color: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : theme.colors.textMuted};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ $active }) => ($active ? '600' : '400')};
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.borderHover};
+    color: ${({ theme }) => theme.colors.text};
+  }
+`;

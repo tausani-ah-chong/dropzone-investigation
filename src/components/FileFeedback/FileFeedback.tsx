@@ -17,6 +17,7 @@ interface Props {
   accepted: FileEntry[];
   rejected: RejectedEntry[];
   onClear: () => void;
+  isUploading?: boolean;
 }
 
 function formatSize(bytes: number): string {
@@ -26,13 +27,13 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export const FileFeedback: React.FC<Props> = ({ accepted, rejected, onClear }) => {
+export const FileFeedback: React.FC<Props> = ({ accepted, rejected, onClear, isUploading }) => {
   const hasAny = accepted.length > 0 || rejected.length > 0;
 
   return (
     <FeedbackWrapper>
       {hasAny && (
-        <ClearButton onClick={onClear} type="button">
+        <ClearButton onClick={onClear} type="button" disabled={isUploading}>
           Clear
         </ClearButton>
       )}
