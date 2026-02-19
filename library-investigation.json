@@ -1,0 +1,288 @@
+{
+  "investigation": {
+    "title": "React Dropzone Library Comparison",
+    "description": "A comparison of the top 4 MIT-licensed React file drop libraries, evaluated for developer experience, UI quality, bundle size, and feature set. Each library was tested with .csv/.zip file restrictions and a 10 MB size limit.",
+    "criteria": [
+      "MIT license",
+      "TypeScript support",
+      "Vite compatible",
+      "Active maintenance",
+      "Free to use"
+    ],
+    "constraints_tested": {
+      "accepted_types": [".csv", ".zip"],
+      "max_file_size_mb": 10,
+      "notes": "Windows browsers report .zip as application/x-zip-compressed — all implementations account for this"
+    },
+    "live_demo": "https://tausani-ah-chong.github.io/dropzone-investigation/",
+    "source_code": "https://github.com/tausani-ah-chong/dropzone-investigation"
+  },
+  "libraries": [
+    {
+      "rank": 1,
+      "id": "react-dropzone",
+      "name": "react-dropzone",
+      "version_tested": "v14+",
+      "description": "Simple HTML5 drag-and-drop zone for React. Lightweight, hooks-based, and zero dependencies. The most widely adopted dropzone library in the React ecosystem.",
+      "links": {
+        "github": "https://github.com/react-dropzone/react-dropzone",
+        "npm": "https://www.npmjs.com/package/react-dropzone",
+        "docs": "https://react-dropzone.js.org",
+        "changelog": "https://github.com/react-dropzone/react-dropzone/blob/master/CHANGELOG.md"
+      },
+      "stats": {
+        "weekly_downloads": "~7,100,000",
+        "github_stars": "~10,900",
+        "license": "MIT",
+        "last_release": "Active",
+        "gzipped_size_kb": "~3.5"
+      },
+      "features": {
+        "typescript_native": true,
+        "hooks_api": true,
+        "file_type_restriction": true,
+        "file_size_restriction": true,
+        "multiple_files": true,
+        "click_to_open": true,
+        "drag_and_drop": true,
+        "image_preview": false,
+        "upload_progress": false,
+        "resumable_uploads": false,
+        "cloud_sources": false,
+        "requires_css": false
+      },
+      "implementation": {
+        "package_install": "npm install react-dropzone",
+        "type_filter_approach": "accept: { 'text/csv': ['.csv'], 'application/zip': ['.zip'], 'application/x-zip-compressed': ['.zip'] }",
+        "size_filter_approach": "maxSize: 10485760",
+        "rejection_approach": "onDropRejected(fileRejections) — errors[].code maps to 'file-too-large' | 'file-invalid-type'",
+        "styling_approach": "Pure styled-components — full control, no CSS overrides needed"
+      },
+      "pros": [
+        "By far the most popular — huge community and examples",
+        "Extremely lightweight (~3.5 kB gzipped)",
+        "Clean hooks API (useDropzone) — easy to compose",
+        "Full control over UI — renders nothing itself",
+        "Zero dependencies",
+        "Excellent TypeScript types"
+      ],
+      "cons": [
+        "No built-in upload progress or server communication",
+        "No image preview out of the box",
+        "Minimal — you build everything yourself"
+      ],
+      "best_for": "Projects that need a simple, highly customisable drop target with minimal overhead"
+    },
+    {
+      "rank": 2,
+      "id": "uppy",
+      "name": "@uppy/react + @uppy/core",
+      "version_tested": "v5+",
+      "description": "Modular, extensible file uploader from Transloadit. Plugin-based architecture supports resumable uploads (Tus), cloud sources (Google Drive, Dropbox), image editing, and more. Most feature-rich option.",
+      "links": {
+        "github": "https://github.com/transloadit/uppy",
+        "npm_react": "https://www.npmjs.com/package/@uppy/react",
+        "npm_core": "https://www.npmjs.com/package/@uppy/core",
+        "docs": "https://uppy.io/docs/",
+        "plugins": "https://uppy.io/docs/plugins/",
+        "changelog": "https://github.com/transloadit/uppy/blob/main/CHANGELOG.md"
+      },
+      "stats": {
+        "weekly_downloads": "~298,000",
+        "github_stars": "~30,300",
+        "license": "MIT",
+        "last_release": "Active",
+        "gzipped_size_kb": "~25"
+      },
+      "features": {
+        "typescript_native": true,
+        "hooks_api": true,
+        "file_type_restriction": true,
+        "file_size_restriction": true,
+        "multiple_files": true,
+        "click_to_open": true,
+        "drag_and_drop": true,
+        "image_preview": true,
+        "upload_progress": true,
+        "resumable_uploads": true,
+        "cloud_sources": true,
+        "requires_css": false
+      },
+      "implementation": {
+        "package_install": "npm install @uppy/core @uppy/react",
+        "type_filter_approach": "restrictions.allowedFileTypes: ['.csv', '.zip', 'text/csv', 'application/zip']",
+        "size_filter_approach": "restrictions.maxFileSize: 10485760",
+        "rejection_approach": "useUppyEvent(uppy, 'restriction-failed', (file, error) => ...) — must be inside UppyContextProvider",
+        "styling_approach": "useDropzone hook returns getRootProps/getInputProps — wrap in styled div",
+        "important_notes": [
+          "@uppy/drag-drop is deprecated in Uppy v5 — do not install",
+          "useUppyEvent and useDropzone must be called inside a child of UppyContextProvider",
+          "Set autoProceed: false when no real server is configured"
+        ]
+      },
+      "pros": [
+        "Most starred (30K+) — very well maintained by Transloadit",
+        "Huge plugin ecosystem (Tus, S3, Google Drive, Dropbox, Webcam, etc.)",
+        "Built-in upload progress, retry, and error handling",
+        "Supports resumable uploads via Tus protocol",
+        "Headless React hooks in v5 — clean integration"
+      ],
+      "cons": [
+        "Larger bundle (~25 kB gzipped for core + react)",
+        "More complex setup — requires UppyContextProvider pattern",
+        "Overkill for simple drop targets",
+        "Plugin-based architecture has a learning curve"
+      ],
+      "best_for": "Projects needing production-grade uploads — resumable, cloud sources, progress tracking, or S3/Transloadit integration"
+    },
+    {
+      "rank": 3,
+      "id": "filepond",
+      "name": "react-filepond + filepond",
+      "version_tested": "Active",
+      "description": "Feature-rich file upload widget with a polished built-in UI. Supports image preview, encoding, EXIF orientation, and an extensive plugin ecosystem. Renders its own UI so less custom styling needed.",
+      "links": {
+        "github": "https://github.com/pqina/react-filepond",
+        "github_core": "https://github.com/pqina/filepond",
+        "npm_react": "https://www.npmjs.com/package/react-filepond",
+        "npm_core": "https://www.npmjs.com/package/filepond",
+        "docs": "https://pqina.nl/filepond/docs/",
+        "plugins": "https://pqina.nl/filepond/docs/api/plugins/",
+        "changelog": "https://github.com/pqina/filepond/blob/master/CHANGELOG.md"
+      },
+      "stats": {
+        "weekly_downloads": "~204,000",
+        "github_stars": "~16,300",
+        "license": "MIT",
+        "last_release": "Active",
+        "gzipped_size_kb": "~16"
+      },
+      "features": {
+        "typescript_native": true,
+        "hooks_api": false,
+        "file_type_restriction": true,
+        "file_size_restriction": true,
+        "multiple_files": true,
+        "click_to_open": true,
+        "drag_and_drop": true,
+        "image_preview": true,
+        "upload_progress": true,
+        "resumable_uploads": false,
+        "cloud_sources": false,
+        "requires_css": true
+      },
+      "implementation": {
+        "package_install": "npm install filepond react-filepond filepond-plugin-file-validate-type filepond-plugin-file-validate-size",
+        "type_filter_approach": "acceptedFileTypes: ['text/csv', 'application/zip', 'application/x-zip-compressed'] + FilePondPluginFileValidateType",
+        "size_filter_approach": "maxFileSize: '10MB' + FilePondPluginFileValidateSize",
+        "rejection_approach": "onaddfile(error, file) — error is non-null (FilePondErrorDescription with .body) on rejection",
+        "styling_approach": "Import filepond/dist/filepond.min.css globally, override .filepond--* classes in a scoped wrapper",
+        "important_notes": [
+          "registerPlugin() must be called before the component is used — call at module level",
+          "Validation plugins (file-validate-type, file-validate-size) are separate npm packages",
+          "CSS must be imported — best done in main.tsx for global scope",
+          "FilePondErrorDescription has .body (not .main or .message)"
+        ]
+      },
+      "pros": [
+        "Beautiful built-in UI — polished drop zone with file list, progress, and thumbnails",
+        "Extensive plugin ecosystem (image preview, crop, EXIF, encode, etc.)",
+        "Good documentation with live examples",
+        "Handles chunked and server uploads well"
+      ],
+      "cons": [
+        "Requires CSS import — harder to fully theme to a custom design system",
+        "Component-based (not hooks) — less composable than react-dropzone or Uppy v5",
+        "Overriding built-in styles requires specificity tricks",
+        "Larger footprint when validation plugins are added"
+      ],
+      "best_for": "Projects where you want a polished out-of-the-box UI with minimal custom styling, especially with image uploads"
+    },
+    {
+      "rank": 4,
+      "id": "react-uploady",
+      "name": "@rpldy/uploady",
+      "version_tested": "Active",
+      "description": "Modern context-based upload framework for React. Highly composable via hooks — you build the UI entirely yourself using provided primitives. Unique in supporting both file and text-based uploads.",
+      "links": {
+        "github": "https://github.com/rpldy/react-uploady",
+        "npm": "https://www.npmjs.com/package/@rpldy/uploady",
+        "npm_drop_zone": "https://www.npmjs.com/package/@rpldy/upload-drop-zone",
+        "docs": "https://react-uploady.org/docs/",
+        "storybook": "https://react-uploady-storybook.netlify.app/",
+        "changelog": "https://github.com/rpldy/react-uploady/blob/master/CHANGELOG.md"
+      },
+      "stats": {
+        "weekly_downloads": "~34,000",
+        "github_stars": "~1,900",
+        "license": "MIT",
+        "last_release": "Active",
+        "gzipped_size_kb": "~6"
+      },
+      "features": {
+        "typescript_native": true,
+        "hooks_api": true,
+        "file_type_restriction": true,
+        "file_size_restriction": true,
+        "multiple_files": true,
+        "click_to_open": false,
+        "drag_and_drop": true,
+        "image_preview": false,
+        "upload_progress": true,
+        "resumable_uploads": true,
+        "cloud_sources": false,
+        "requires_css": false
+      },
+      "implementation": {
+        "package_install": "npm install @rpldy/uploady @rpldy/upload-drop-zone",
+        "type_filter_approach": "fileFilter prop on <Uploady> — (file: File | string) => boolean",
+        "size_filter_approach": "fileFilter prop — check file.size <= 10485760",
+        "rejection_approach": "No native rejection event — use dropHandler on UploadDropZone to inspect raw DragEvent files and diff against fileFilter logic",
+        "styling_approach": "Pure styled-components — UploadDropZone renders a div, use extraProps for drag event callbacks",
+        "important_notes": [
+          "destination prop is required on <Uploady> even for demo purposes",
+          "Set autoUpload: false when no real server",
+          "UploadDropZone does not expose onDragOver/onDragLeave props — use extraProps to pass them",
+          "dropHandler receives raw DragEvent — use e.dataTransfer.files to access all dropped files including rejected ones"
+        ]
+      },
+      "pros": [
+        "Highly composable hooks-first architecture",
+        "Pure styled-components friendly — no CSS to fight",
+        "Supports chunked and resumable uploads",
+        "Good for building completely custom upload UIs"
+      ],
+      "cons": [
+        "Smallest community (~1.9K stars) — fewer examples and Stack Overflow answers",
+        "No native rejection feedback — requires workaround via dropHandler",
+        "UploadDropZone doesn't expose drag callbacks directly",
+        "destination prop required even when not uploading"
+      ],
+      "best_for": "Projects needing a fully custom upload UI with composable hooks, especially where chunked uploads or custom server protocols are required"
+    }
+  ],
+  "comparison_matrix": {
+    "headers": ["Feature", "react-dropzone", "@uppy/react", "react-filepond", "@rpldy/uploady"],
+    "rows": [
+      ["Weekly downloads",     "~7.1M",    "~298K",   "~204K",   "~34K"],
+      ["GitHub stars",         "~10.9K",   "~30.3K",  "~16.3K",  "~1.9K"],
+      ["Gzipped size",         "~3.5 kB",  "~25 kB",  "~16 kB",  "~6 kB"],
+      ["License",              "MIT",      "MIT",     "MIT",     "MIT"],
+      ["TypeScript native",    "Yes",      "Yes",     "Yes",     "Yes"],
+      ["Hooks API",            "Yes",      "Yes",     "No",      "Yes"],
+      ["Requires CSS",         "No",       "No",      "Yes",     "No"],
+      ["Built-in UI",          "No",       "No",      "Yes",     "No"],
+      ["Image preview",        "No",       "Plugin",  "Plugin",  "No"],
+      ["Upload progress",      "No",       "Yes",     "Yes",     "Yes"],
+      ["Resumable uploads",    "No",       "Plugin",  "No",      "Yes"],
+      ["Cloud sources",        "No",       "Plugin",  "No",      "No"],
+      ["Rejection feedback",   "Native",   "Native",  "Native",  "Workaround needed"]
+    ]
+  },
+  "recommendation": {
+    "simple_drop_target": "react-dropzone",
+    "production_uploads_with_cloud": "@uppy/react",
+    "polished_ui_out_of_the_box": "react-filepond",
+    "custom_ui_with_chunked_uploads": "@rpldy/uploady"
+  }
+}
