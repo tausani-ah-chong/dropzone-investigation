@@ -49,4 +49,16 @@ export const LIBRARIES: Record<string, LibraryMeta> = {
     lastRelease: 'Active',
     gzippedSize: '~6 kB',
   },
+  custom: {
+    id: 'custom-dropzone',
+    name: 'Custom useDropzone hook',
+    description: 'In-house drag-and-drop hook built from scratch. No external dependencies — pure React, DOM events, and TypeScript.',
+    githubUrl: '#',
+    npmUrl: '#',
+    weeklyDownloads: 'N/A',
+    stars: 'N/A',
+    license: 'In-house',
+    lastRelease: 'This session',
+    gzippedSize: '~0.5 kB',
+  },
 };
