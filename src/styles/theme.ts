@@ -1,0 +1,57 @@
+export const theme = {
+  colors: {
+    background: '#0f1117',
+    surface: '#1a1d27',
+    surfaceHover: '#22263a',
+    border: '#2e3348',
+    borderHover: '#4a5080',
+    primary: '#6c8ef2',
+    primaryHover: '#8aaaf5',
+    success: '#4ade80',
+    successBg: '#052e16',
+    error: '#f87171',
+    errorBg: '#2d0a0a',
+    text: '#e2e8f0',
+    textMuted: '#94a3b8',
+    textDim: '#64748b',
+    dropzoneBg: '#12151f',
+    dropzoneBorder: '#3a4060',
+    dropzoneActive: '#6c8ef2',
+    dropzoneActiveBg: '#0f1733',
+    badge: '#1e2340',
+    badgeBorder: '#3a4060',
+  },
+  spacing: {
+    xs: '4px',
+    sm: '8px',
+    md: '16px',
+    lg: '24px',
+    xl: '32px',
+    xxl: '48px',
+  },
+  radii: {
+    sm: '6px',
+    md: '10px',
+    lg: '14px',
+    xl: '18px',
+  },
+  fonts: {
+    sans: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    mono: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
+  },
+  fontSizes: {
+    xs: '11px',
+    sm: '12px',
+    md: '14px',
+    lg: '16px',
+    xl: '18px',
+    xxl: '24px',
+    hero: '32px',
+  },
+  shadows: {
+    card: '0 4px 24px rgba(0,0,0,0.4)',
+    glow: '0 0 0 3px rgba(108,142,242,0.25)',
+  },
+} as const;
+
+export type Theme = typeof theme;
