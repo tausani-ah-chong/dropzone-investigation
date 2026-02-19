@@ -21,7 +21,6 @@ const DropArea = styled.div<{ $isDragActive: boolean }>`
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
   outline: none;
-  position: relative;
 
   ${({ $isDragActive, theme }) =>
     $isDragActive &&
@@ -36,14 +35,6 @@ const DropArea = styled.div<{ $isDragActive: boolean }>`
   }
 `;
 
-const HiddenInput = styled.input`
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-`;
 
 const DropIcon = styled.div`
   font-size: 32px;
@@ -101,7 +92,7 @@ const UppyDropzoneInner: React.FC<InnerProps> = ({ uppy, setAccepted, setRejecte
 
   return (
     <DropArea {...rootProps} $isDragActive={isDragActive} tabIndex={0}>
-      <HiddenInput {...inputProps} />
+      <input {...inputProps} style={{ display: 'none' }} />
       <DropIcon>{isDragActive ? '📂' : '📁'}</DropIcon>
       <DropText>
         {isDragActive ? 'Drop files here…' : 'Drag & drop or click to select'}
